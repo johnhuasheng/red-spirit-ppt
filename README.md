@@ -2,7 +2,9 @@
 
 一份可直接放映的红色主题团日活动 PowerPoint：开场金光组装封面、团徽 3D 飞入、旋转扇面平滑切换、金色浮雕标题、动态循环结尾。
 
-**在线观看：https://johnhuasheng.github.io/red-spirit-ppt/**（放映录像 + 逐页浏览 + 下载）
+**在线观看：** [https://johnhuasheng.github.io/red-spirit-ppt/](https://johnhuasheng.github.io/red-spirit-ppt/)
+
+（放映录像 + 逐页浏览 + 下载）
 
 ![封面](site/slides/01.jpg)
 
