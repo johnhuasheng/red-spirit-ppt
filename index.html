@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>团日活动 · 红色精神旋转 PPT</title>
+<meta name="description" content="红色主题团日活动 PPT：团徽 3D 飞入、旋转扇面平滑切换、金色浮雕标题。可在线观看放映效果、逐页浏览并下载 .pptx。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1a0306; --bg2:#2a060b; --panel:rgba(255,255,255,.04); --line:rgba(232,190,110,.28);
+    --gold:#f2cf7c; --gold2:#c9932f; --text:#f6e7cf; --muted:#c9a98a; --red:#c8141e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:radial-gradient(ellipse at 50% -10%,#5a0a12 0%,var(--bg2) 40%,var(--bg) 100%) fixed;color:var(--text);
+    font-family:'Noto Serif SC','Songti SC','SimSun',serif;line-height:1.7}
+  a{color:var(--gold)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+  header{text-align:center;padding:56px 0 28px}
+  .eyebrow{letter-spacing:.4em;font-size:12px;color:var(--muted);text-transform:uppercase}
+  h1{margin:10px 0 6px;font-weight:900;font-size:clamp(34px,6vw,60px);letter-spacing:.12em;
+    background:linear-gradient(180deg,#fff4c6 0%,#f2cf7c 45%,#b9801f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,.45))}
+  .sub{color:var(--muted);font-size:clamp(14px,2vw,17px);margin:0}
+  .rule{display:flex;align-items:center;gap:12px;justify-content:center;margin:18px auto 0;max-width:420px}
+  .rule:before,.rule:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
+  .rule i{width:9px;height:9px;transform:rotate(45deg);background:var(--gold);display:block}
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:4px;text-decoration:none;font-weight:700;font-size:15px;
+    border:1px solid var(--gold2);color:var(--gold);background:rgba(200,20,30,.18);transition:background .2s,transform .2s}
+  .btn:hover{background:rgba(200,20,30,.38);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(180deg,#d8222b,#8e0710);color:#fff3d6;border-color:#e8b85e}
+  section{margin:40px 0}
+  h2{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:.15em;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+  h2:before{content:"";width:4px;height:20px;background:linear-gradient(var(--gold),var(--gold2))}
+  .frame{position:relative;border:1px solid var(--line);padding:8px;background:var(--panel);border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .frame:before,.frame:after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--gold)}
+  .frame:before{top:-3px;left:-3px;border-right:0;border-bottom:0}
+  .frame:after{bottom:-3px;right:-3px;border-left:0;border-top:0}
+  video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+  .note{color:var(--muted);font-size:13px;margin:10px 2px 0}
+  /* 逐页浏览 */
+  .viewer{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000}
+  .viewer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+  .viewer img.on{opacity:1}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--gold2);
+    background:rgba(40,0,4,.55);color:var(--gold);font-size:20px;cursor:pointer;display:grid;place-items:center}
+  .nav:hover{background:rgba(120,0,10,.75)}
+  .prev{left:12px}.next{right:12px}
+  .counter{position:absolute;right:12px;bottom:10px;background:rgba(30,0,4,.6);color:var(--gold);font-size:13px;padding:2px 10px;border-radius:12px}
+  .caption{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 2px 0;flex-wrap:wrap}
+  .caption b{color:var(--gold);font-size:17px}
+  .fs{background:none;border:1px solid var(--line);color:var(--muted);padding:4px 12px;border-radius:4px;cursor:pointer;font-family:inherit}
+  .thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}
+  .thumbs button{padding:0;border:1px solid transparent;background:none;cursor:pointer;border-radius:3px;overflow:hidden;opacity:.6;transition:opacity .2s,border-color .2s}
+  .thumbs button.on,.thumbs button:hover{opacity:1;border-color:var(--gold)}
+  .thumbs img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+  /* 特点 */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{border:1px solid var(--line);background:var(--panel);padding:16px 18px;border-radius:4px}
+  .card h3{margin:0 0 6px;color:var(--gold);font-size:16px}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 40px;color:var(--muted);font-size:12.5px}
+  footer ul{padding-left:18px;margin:6px 0}
+  footer li{word-break:break-all}
+  @media (max-width:760px){
+    .thumbs{grid-template-columns:repeat(4,1fr)}
+    .grid{grid-template-columns:1fr}
+    .nav{width:36px;height:36px;font-size:16px}
+    header{padding-top:36px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Communist Youth League · Theme Day</div>
+    <h1>团日活动 · 红色精神</h1>
+    <p class="sub">团徽 3D 飞入 · 旋转扇面平滑切换 · 金色浮雕标题 —— 一份可直接放映的 PowerPoint</p>
+    <div class="rule"><i></i></div>
+    <div class="actions">
+      <a class="btn primary" href="团日活动_红色精神.pptx" download>⬇ 下载 PPT（.pptx）</a>
+      <a class="btn" href="#play">▶ 观看放映效果</a>
+      <a class="btn" href="#pages">▦ 逐页浏览</a>
+    </div>
+  </header>
+
+  <section id="play">
+    <h2>放映效果</h2>
+    <div class="frame">
+      <video src="site/deck.mp4" poster="site/slides/01.jpg" controls playsinline preload="metadata"></video>
+    </div>
+    <p class="note">由 PowerPoint 直接导出的放映录像。实际放映时每页停留到你单击为止；录像里用 3 秒停顿代替单击。</p>
+  </section>
+
+  <section id="pages">
+    <h2>逐页浏览</h2>
+    <div class="frame">
+      <div class="viewer" id="viewer">
+        <button class="nav prev" id="prev" aria-label="上一页">‹</button>
+        <button class="nav next" id="next" aria-label="下一页">›</button>
+        <div class="counter" id="counter"></div>
+      </div>
+    </div>
+    <div class="caption"><span><b id="title"></b></span><button class="fs" id="fs">全屏 ⛶</button></div>
+    <div class="thumbs" id="thumbs"></div>
+    <p class="note">← → 方向键或单击图片翻页。</p>
+  </section>
+
+  <section>
+    <h2>设计亮点</h2>
+    <div class="grid">
+      <div class="card"><h3>开场组装</h3><p>暗场亮起金光，光芒旋转展开，光点汇聚成团徽，标题金光扫过显字。</p></div>
+      <div class="card"><h3>团徽 3D 飞入</h3><p>带厚度的金色团徽从画外飞入、翻转、落定，60fps 预渲染，放映不卡。</p></div>
+      <div class="card"><h3>旋转扇面切换</h3><p>左侧金边扇面每页转动 40°，新画面随扇面旋转进入，页与页连贯衔接。</p></div>
+      <div class="card"><h3>穿越团徽</h3><p>团徽放大化作满屏金光，金光散去露出天安门夜景。</p></div>
+      <div class="card"><h3>丰富内容</h3><p>活动流程、光辉团史时间轴、入团誓词、生在红旗下、中国青年等 12 页内容。</p></div>
+      <div class="card"><h3>动态结尾</h3><p>光芒、纹饰轮、祥云、光点持续流动的无缝循环背景，文字可直接编辑。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>使用说明</h2>
+    <div class="card">
+      <p>用 PowerPoint 2019 / Microsoft 365 打开（需要支持“平滑”切换），按 F5 放映。每单击一次进入下一页，页面内容随切换自动呈现。
+      封面与结尾的“XX学院 · XX团支部”、日期等文字可直接修改。另有早期网页版复刻：<a href="web-v1.html">web-v1.html</a>。</p>
+    </div>
+  </section>
+
+  <footer>
+    图片来源（Wikimedia Commons，CC BY-SA 4.0，经裁剪与调色）：
+    <ul>
+      <li>Tiananmen 2016 April night (19-11)、Tiananmen 2015 September —— Morio</li>
+      <li>Huabiao (Tiananmen)、Monument to the People's Heroes 5 —— EditQ</li>
+      <li>Great Hall of the People with flags；Tian'anmen Gatetower, National Emblem, and lanterns 1；Tian'anmen Gatetower, National Emblem, lanterns, and flags —— 維基小霸王</li>
+    </ul>
+    完整链接见 <a href="images/hd/credits.txt">images/hd/credits.txt</a>。团徽、扇面、祥云等图形为程序绘制。
+  </footer>
+</div>
+
+<script>
+  const SLIDES = ['封面 · 团日活动','新时代 · 新青年 · 新担当','活动流程','不忘初心','光辉团史','薪火相传','红旗漫卷',
+                  '生在红旗下 · 长在春风里','入团誓词','中国青年','心中有党 · 成绩理想','青春向党 · 奋斗强国'];
+  const viewer = document.getElementById('viewer'), thumbs = document.getElementById('thumbs');
+  const imgs = SLIDES.map((t, i) => {
+    const src = `site/slides/${String(i + 1).padStart(2, '0')}.jpg`;
+    const im = document.createElement('img'); im.src = src; im.alt = t; im.loading = i ? 'lazy' : 'eager';
+    viewer.insertBefore(im, viewer.firstChild);
+    const b = document.createElement('button'); b.innerHTML = `<img src="${src}" alt="${t}" loading="lazy">`;
+    b.onclick = () => show(i); thumbs.appendChild(b);
+    return im;
+  });
+  let cur = 0;
+  function show(i) {
+    cur = (i + SLIDES.length) % SLIDES.length;
+    imgs.forEach((im, k) => im.classList.toggle('on', k === cur));
+    [...thumbs.children].forEach((b, k) => b.classList.toggle('on', k === cur));
+    document.getElementById('title').textContent = `${cur + 1}. ${SLIDES[cur]}`;
+    document.getElementById('counter').textContent = `${cur + 1} / ${SLIDES.length}`;
+  }
+  document.getElementById('prev').onclick = e => { e.stopPropagation(); show(cur - 1); };
+  document.getElementById('next').onclick = e => { e.stopPropagation(); show(cur + 1); };
+  viewer.addEventListener('click', () => show(cur + 1));
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'VIDEO') return;
+    if (e.key === 'ArrowRight') show(cur + 1);
+    if (e.key === 'ArrowLeft') show(cur - 1);
+  });
+  document.getElementById('fs').onclick = () => (document.fullscreenElement ? document.exitFullscreen() : viewer.requestFullscreen());
+  show(0);
+</script>
+</body>
+</html>

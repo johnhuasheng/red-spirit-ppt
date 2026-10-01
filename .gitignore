@@ -1,0 +1,5 @@
+_build/assets/
+__pycache__/
+.claude/
+~$*
+*.tmp

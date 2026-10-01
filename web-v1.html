@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>团日活动 · 红色精神</title>
+<style>
+  :root{
+    --red:#e8131b;
+    --gold:#f8d34d;
+    --brush:'STXingkai','华文行楷','Xingkai SC','STKaiti','KaiTi','楷体',serif;
+    --P-x:-434px; --P-y:450px;      /* 扇面圆心（在画面左侧外） */
+  }
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;cursor:pointer;user-select:none}
+  #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+  #stage{position:relative;width:1600px;height:900px;overflow:hidden;flex:none;transform-origin:center center;background:#000}
+  .scene{position:absolute;inset:0}
+  .hidden{display:none!important}
+
+  /* ========== 1. 标题页：三角折纸 ========== */
+  #titleScene{background:radial-gradient(ellipse at 50% 40%,#f2161e,#d90b12);perspective:1400px;z-index:30}
+  #paper{position:absolute;inset:0;background:#f3f1ec;transform-origin:50% 0;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%);
+    transition:clip-path .38s cubic-bezier(.6,0,.3,1)}
+  #paper.tri{clip-path:polygon(50% 0,50% 0,84.1% 100%,15.9% 100%)}
+  #paper.fly{animation:paperFly 1.15s cubic-bezier(.45,0,.75,.6) forwards}
+  #ttext{position:absolute;left:0;right:0;top:47%;transform:translateY(-50%);text-align:center;
+    font:300 92px 'DengXian Light','等线 Light','Microsoft YaHei Light','PingFang SC',sans-serif;color:#4a4a4a;letter-spacing:6px}
+  #crease{position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,0,.05),rgba(0,0,0,.22));
+    clip-path:polygon(50% 0,50% 100%,15.9% 100%);opacity:0;transition:opacity .5s}
+  #paper.fly #crease{opacity:1}
+  #tlines{position:absolute;inset:0;pointer-events:none}
+  #tlines path{stroke:#e60012;stroke-width:2.2;fill:none;stroke-dasharray:1000;stroke-dashoffset:1000}
+  #tlines.draw path{transition:stroke-dashoffset .4s ease-out;stroke-dashoffset:0}
+  #tlines.gone{opacity:0;transition:opacity .2s}
+  @keyframes paperFly{
+    0%  {transform:translate(0,0) rotateZ(0) rotateX(0) scale(1)}
+    30% {transform:translate(10px,330px) rotateZ(58deg) rotateX(35deg) scale(.9)}
+    62% {transform:translate(-120px,430px) rotateZ(62deg) rotateX(55deg) scale(.8)}
+    100%{transform:translate(-980px,960px) rotateZ(66deg) rotateX(66deg) scale(.55)}
+  }
+
+  /* ========== 2. 团徽页：3D 团徽飞入 ========== */
+  #emblemScene{background:radial-gradient(ellipse at 50% 40%,#f2161e,#d90b12);perspective:1100px;z-index:20;
+    transition:opacity .9s ease .35s}
+  #emblemScene.out{opacity:0}
+  #emblemScene.out #emb3d,#emblemScene.out #slogan{opacity:0;transition:opacity .4s}
+  #emb3d{position:absolute;left:50%;top:50%;width:260px;height:260px;margin:-130px 0 0 -130px;
+    transform-style:preserve-3d;opacity:0;transform:translate3d(0,-110px,0) scale(1)}
+  #emb3d.fly{animation:embFly 3.6s cubic-bezier(.33,.05,.25,1) forwards}
+  #emb3d svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;backface-visibility:visible}
+  #emb3d .face{filter:drop-shadow(0 0 16px rgba(255,196,40,.75))}
+  #emb3d .sheen{opacity:0}
+  #emb3d.fly .sheen{animation:sheen 3.6s linear forwards}
+  #emb3d .glint{transform:translateX(-260px)}
+  #emb3d.fly .glint{animation:glint 1s ease-in-out 3.35s forwards}
+  @keyframes embFly{
+    0%  {opacity:0;transform:translate3d(0,0,0)        scale(.04) rotateX(0)     rotateY(90deg)  rotateZ(30deg)}
+    5%  {opacity:1;transform:translate3d(0,-6px,0)     scale(.10) rotateX(10deg) rotateY(150deg) rotateZ(12deg)}
+    22% {opacity:1;transform:translate3d(-520px,-380px,0) scale(3.4) rotateX(55deg) rotateY(250deg) rotateZ(-40deg)}
+    40% {opacity:1;transform:translate3d(-180px,-430px,0) scale(3.6) rotateX(60deg) rotateY(290deg) rotateZ(-25deg)}
+    58% {opacity:1;transform:translate3d(-120px,-170px,0) scale(2.6) rotateX(35deg) rotateY(322deg) rotateZ(-38deg)}
+    80% {opacity:1;transform:translate3d(-8px,-110px,0)   scale(1.22) rotateX(8deg) rotateY(352deg) rotateZ(-5deg)}
+    100%{opacity:1;transform:translate3d(0,-110px,0)      scale(1)   rotateX(0)    rotateY(360deg) rotateZ(0)}
+  }
+  @keyframes sheen{0%{opacity:0}8%{opacity:.85}62%{opacity:.75}88%{opacity:.12}100%{opacity:0}}
+  @keyframes glint{from{transform:translateX(-260px)}to{transform:translateX(260px)}}
+  #slogan{position:absolute;left:0;right:0;top:612px;text-align:center;
+    font:700 44px 'Microsoft YaHei','微软雅黑','PingFang SC',sans-serif;color:var(--gold);letter-spacing:10px;
+    text-shadow:0 0 12px rgba(255,190,40,.35)}
+  #slogan span{opacity:0;display:inline-block;transform:translateY(6px) scale(1.15);filter:blur(4px);
+    transition:opacity .45s,transform .45s,filter .45s}
+  #slogan span.on{opacity:1;transform:none;filter:none}
+  #slogan .gap{width:26px}
+
+  /* ========== 3. 旋转扇面页 ========== */
+  #fanScene{z-index:10;background:#000}
+  .bgSlide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .75s ease}
+  .bgSlide.on{opacity:1}
+  #vortexBg.wash{filter:brightness(1.45) saturate(.5)}
+  #vortexBg{transition:opacity .9s ease, filter 1.4s ease}
+  #tint{position:absolute;inset:0;background:rgba(232,20,45,0);transition:background-color .9s ease;
+    -webkit-mask-image:radial-gradient(circle at var(--P-x) var(--P-y),transparent 903px,#000 905px);
+            mask-image:radial-gradient(circle at var(--P-x) var(--P-y),transparent 903px,#000 905px)}
+  .wheelBox{position:absolute;left:-1338px;top:-454px;width:1808px;height:1808px;transform-origin:904px 904px}
+  #ring{opacity:0;
+    -webkit-mask-image:radial-gradient(circle at 904px 904px,transparent 508px,#000 510px,#000 903px,transparent 905px);
+            mask-image:radial-gradient(circle at 904px 904px,transparent 508px,#000 510px,#000 903px,transparent 905px)}
+  #ring .inner{position:absolute;left:1338px;top:454px;width:1600px;height:900px}
+  #ring .inner .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+  #ring.spin{animation:ringIn 1.15s cubic-bezier(.3,.1,.2,1) forwards}
+  @keyframes ringIn{0%{opacity:0;transform:rotate(-62deg)}14%{opacity:1}85%{opacity:1;transform:rotate(0)}100%{opacity:0;transform:rotate(0)}}
+  #wheel{--hub:rgba(226,24,58,0);--spoke:rgba(226,24,58,0);--arc:rgba(226,24,58,0);overflow:visible}
+  #wheel .hub{fill:var(--hub);transition:fill .9s}
+  #wheel .spk{fill:var(--spoke);transition:fill .9s}
+  #wheel .arc{fill:none;stroke:var(--arc);stroke-width:8;transition:stroke .9s}
+  #wheel.spin{animation:wheelSpin 1.15s cubic-bezier(.3,.1,.2,1) forwards}
+  @keyframes wheelSpin{from{transform:rotate(-60deg)}to{transform:rotate(0)}}
+  .txtSlide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+  .txtSlide.on{opacity:1;transition-delay:.55s}
+
+  /* 生在红旗下 */
+  .hqbg{background:radial-gradient(ellipse at 60% 45%,#f31a20 0%,#e2111a 55%,#c50810 100%)}
+  .hq{position:absolute;font-family:var(--brush);line-height:1;white-space:nowrap;letter-spacing:-12px}
+  .hq .l2{margin-left:120px;margin-top:40px}
+  .hq.main{left:345px;top:270px;font-size:152px;
+    background:linear-gradient(180deg,#fff3b8 0%,#ffd75a 45%,#f0a91e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 3px 2px rgba(110,0,0,.35))}
+  .hq.ghost{left:770px;top:52px;font-size:132px;color:#ffc9b5;opacity:.17}
+  .hq.ghost .l2{margin-top:30px}
+  .seal{display:inline-block;vertical-align:middle;margin-left:18px;width:26px;height:34px;border:2px solid #ffe2b0;border-radius:3px;
+    font:700 11px/15px 'KaiTi',serif;color:#ffe2b0;text-align:center;-webkit-text-fill-color:#ffe2b0;writing-mode:vertical-rl;padding:1px}
+
+  /* 中国青年 */
+  .youthbg{background:
+      linear-gradient(118deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.55) 42%,rgba(255,255,255,0) 52%),
+      linear-gradient(118deg,rgba(255,255,255,0) 58%,rgba(255,250,240,.45) 68%,rgba(255,255,255,0) 78%),
+      linear-gradient(160deg,#f7efe0 0%,#f2dcc8 45%,#efd3c0 70%,#f5e6d6 100%)}
+  .yt{position:absolute;left:0;right:0;text-align:center;white-space:nowrap}
+  .yt.t1{top:262px;font:180px/1 var(--brush);color:#e60f16;letter-spacing:4px;text-shadow:0 2px 3px rgba(150,0,0,.15)}
+  .yt.t2{top:524px;font:500 30px 'Microsoft YaHei','Segoe UI',sans-serif;color:#7c6e86;letter-spacing:1px}
+  .yt.t3{top:578px;font:74px/1 var(--brush);color:#e3141b}
+
+  /* 结束页 */
+  #endScene{background:#0a0c18;z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+  #endScene.on{opacity:1;pointer-events:auto}
+  #endScene p{margin:0;position:absolute;top:22px;left:0;right:0;text-align:center;color:#e8e8ee;font:15px 'Microsoft YaHei',sans-serif}
+
+  #hint{position:fixed;right:14px;bottom:10px;color:rgba(255,255,255,.55);font:12px 'Microsoft YaHei',sans-serif;
+    transition:opacity 1s;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+
+    <!-- 扇面场景（第 3 ~ 8 页） -->
+    <div id="fanScene" class="scene">
+      <div id="bgLayer"></div>
+      <div id="tint"></div>
+      <div id="ring" class="wheelBox"><div class="inner"></div></div>
+      <svg id="wheel" class="wheelBox" viewBox="0 0 1808 1808"></svg>
+      <div id="txtLayer"></div>
+    </div>
+
+    <!-- 团徽场景 -->
+    <div id="emblemScene" class="scene">
+      <div id="emb3d"></div>
+      <div id="slogan"></div>
+    </div>
+
+    <!-- 标题场景 -->
+    <div id="titleScene" class="scene">
+      <div id="paper"><div id="ttext">团日活动</div><div id="crease"></div></div>
+      <svg id="tlines" viewBox="0 0 1600 900"><path d="M800 0 L304 819"/><path d="M800 0 L1312 819"/></svg>
+    </div>
+
+    <div id="endScene" class="scene"><p>放映结束，单击鼠标退出。</p></div>
+  </div>
+</div>
+<div id="hint">单击 / → 下一步　F 全屏　R 重播　P 暂停</div>
+
+<script>
+/* ---------------- 舞台自适应 ---------------- */
+const stage = document.getElementById('stage');
+function fit(){ const s = Math.min(innerWidth/1600, innerHeight/900); stage.style.transform = `scale(${s})`; }
+addEventListener('resize', fit); fit();
+
+/* ---------------- 团徽（SVG 绘制） ---------------- */
+function gearPath(){
+  const P=(a,r)=>{const t=a*Math.PI/180;return (r*Math.cos(t)).toFixed(2)+' '+(r*Math.sin(t)).toFixed(2)};
+  // 左上为光滑圆弧，右侧到底部为齿轮
+  let d=`M${P(150,100)} A100 100 0 0 1 ${P(240,100)} A100 100 0 0 1 ${P(330,100)} `;
+  for(let i=0;i<12;i++){const b=-30+i*15;
+    d+=`L${P(b+3,112)} L${P(b+10,112)} L${P(b+13,100)} L${P(b+15,100)} `;}
+  return d+'Z';
+}
+const GEAR = gearPath();
+const FLAG = 'M-66 -108 C-30 -122 10 -88 48 -98 C78 -106 96 -96 110 -80 L114 -14 C96 -30 80 -26 60 -22 C34 -16 18 -2 -6 -12 C-22 -18 -34 -40 -46 -62 Z';
+function starPath(cx,cy,R,r){let d='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;
+  d+=(i?'L':'M')+(cx+rr*Math.cos(a)).toFixed(2)+' '+(cy+rr*Math.sin(a)).toFixed(2)+' ';}return d+'Z';}
+function rays(){let s='';for(let i=0;i<=16;i++){const a=Math.PI+i*Math.PI/16;
+  s+=`<line x1="0" y1="78" x2="${(110*Math.cos(a)).toFixed(1)}" y2="${(78+110*Math.sin(a)).toFixed(1)}"/>`;}return s;}
+
+const FACE = `
+<svg class="face" viewBox="-130 -130 260 260">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff6b8"/><stop offset=".35" stop-color="#ffd73c"/>
+      <stop offset=".72" stop-color="#f3b300"/><stop offset="1" stop-color="#c88600"/></linearGradient>
+    <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff3a2e"/><stop offset=".6" stop-color="#e3000f"/><stop offset="1" stop-color="#b3000a"/></linearGradient>
+    <linearGradient id="gGlint" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="gSheen" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#fff4e8"/><stop offset="1" stop-color="#ffd0a0"/></radialGradient>
+    <clipPath id="embClip"><path d="${GEAR}"/><path d="${FLAG}"/></clipPath>
+    <clipPath id="innerClip"><circle r="86"/></clipPath>
+    <path id="ribbonText" d="M-62 26 Q0 58 62 26"/>
+  </defs>
+  <path d="${GEAR}" fill="url(#gGold)" stroke="#b77d00" stroke-width="1.5"/>
+  <circle r="88" fill="none" stroke="#c48a00" stroke-width="2"/>
+  <g clip-path="url(#innerClip)" stroke="#fff0a0" stroke-width="1.6" opacity=".55">${rays()}</g>
+  <path d="M-36 80 A36 36 0 0 1 36 80" fill="#ffe57a" stroke="#d29a00" stroke-width="1.5"/>
+  <line x1="-74" y1="-122" x2="-14" y2="-2" stroke="#e7b000" stroke-width="5" stroke-linecap="round"/>
+  <path d="M-80 -134 L-70 -116 L-77 -112 Z" fill="#ffd23a" stroke="#c48a00" stroke-width="1"/>
+  <path d="${FLAG}" fill="url(#gRed)" stroke="#ffd23a" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M30 -96 C50 -70 52 -44 60 -22" fill="none" stroke="#ff6a5a" stroke-width="6" opacity=".35"/>
+  <circle cx="-30" cy="-80" r="19" fill="#ffd23a" stroke="#c48a00" stroke-width="1.5"/>
+  <path d="${starPath(-30,-80,14,5.6)}" fill="#e3000f"/>
+  <path d="M-74 10 Q0 44 74 10 L76 38 Q0 72 -76 38 Z" fill="url(#gRed)" stroke="#ffd23a" stroke-width="2.5" stroke-linejoin="round"/>
+  <text font-family="STXingkai,华文行楷,KaiTi,serif" font-size="19" fill="#ffd94a" text-anchor="middle" letter-spacing="2">
+    <textPath href="#ribbonText" startOffset="50%">中国共青团</textPath></text>
+  <g clip-path="url(#embClip)">
+    <rect class="sheen" x="-130" y="-130" width="260" height="260" fill="url(#gSheen)"/>
+    <g transform="rotate(20)"><rect class="glint" x="-30" y="-200" width="60" height="400" fill="url(#gGlint)"/></g>
+  </g>
+</svg>`;
+
+(function buildEmblem(){
+  const box=document.getElementById('emb3d');
+  let html='';
+  const N=14;
+  for(let i=N;i>=1;i--){              // 背面挤出层，营造金属厚度
+    const k=i/N, c=`rgb(${Math.round(236-90*k)},${Math.round(170-80*k)},${Math.round(20-15*k)})`;
+    html+=`<svg viewBox="-130 -130 260 260" style="transform:translateZ(${-i*1.5}px)"><path d="${GEAR}" fill="${c}"/><path d="${FLAG}" fill="${c}"/></svg>`;
+  }
+  box.innerHTML=html+FACE;
+  // 口号逐字
+  const sl=document.getElementById('slogan');
+  sl.innerHTML=['新时代','新青年','新担当'].map(w=>[...w].map(c=>`<span>${c}</span>`).join('')).join('<span class="gap"></span>');
+})();
+
+/* ---------------- 扇面幻灯片 ---------------- */
+const T = 'rgba(0,0,0,0)';
+const HQ_TEXT = `
+  <div class="hq ghost"><div class="l1">生在红旗下</div><div class="l2">长在春风里</div></div>
+  <div class="hq main"><div class="l1">生在红旗下</div><div class="l2">长在春风里<span class="seal">青春</span></div></div>`;
+const YOUTH_TEXT = `
+  <div class="yt t1">中國青年</div>
+  <div class="yt t2">CHINESE YOUTH</div>
+  <div class="yt t3">青春逢盛世，奋斗正当时</div>`;
+// baked:true 的图片本身已含扇面/红色蒙版（取自视频画面），因此不再叠加静态扇面
+const SLIDES = [
+  {id:'vortex',    bg:'url(images/vortex.jpg)',    fill:'#8098d8', tint:'rgba(232,20,45,.48)', hub:'rgba(226,24,58,.88)', spoke:'rgba(226,24,58,.78)', arc:T},
+  {id:'tiananmen', bg:'url(images/tiananmen.jpg)', fill:'#c8301e', baked:true},
+  {id:'greathall', bg:'url(images/greathall.jpg)', fill:'#d2402a', baked:true},
+  {id:'hongqi',    cls:'hqbg',    fill:'#e2111a', tint:'rgba(150,0,8,.20)',  hub:'rgba(165,0,10,.32)', spoke:'rgba(150,0,10,.38)', arc:'rgba(140,0,0,.45)', text:HQ_TEXT},
+  {id:'youth',     cls:'youthbg', fill:'#f2dcc8', tint:'rgba(232,40,40,.20)', hub:'#e5131b', spoke:'#e5131b', arc:'#e5131b', text:YOUTH_TEXT},
+  {id:'party',     bg:'url(images/party.jpg)',     fill:'#b8200f', baked:true},
+];
+const bgLayer=document.getElementById('bgLayer'), txtLayer=document.getElementById('txtLayer');
+const tint=document.getElementById('tint'), ring=document.getElementById('ring'), wheel=document.getElementById('wheel');
+SLIDES.forEach(s=>{
+  const b=document.createElement('div'); b.className='bgSlide '+(s.cls||''); if(s.bg) b.style.backgroundImage=s.bg;
+  if(s.id==='vortex') b.id='vortexBg';
+  bgLayer.appendChild(b); s.bgEl=b;
+  const t=document.createElement('div'); t.className='txtSlide'; t.innerHTML=s.text||''; txtLayer.appendChild(t); s.txtEl=t;
+});
+// 扇骨轮：中心圆 + 6 根扇骨（每 60° 一根）+ 外弧
+(function buildWheel(){
+  let h='<circle class="hub" cx="904" cy="904" r="509"/>';
+  for(let k=0;k<6;k++) h+=`<rect class="spk" x="1407" y="887" width="401" height="34" transform="rotate(${30+60*k} 904 904)"/>`;
+  h+='<circle class="arc" cx="904" cy="904" r="904"/>';
+  wheel.innerHTML=h;
+})();
+function applyFan(s){
+  const off = s.baked;
+  tint.style.backgroundColor = off?T:s.tint;
+  wheel.style.setProperty('--hub',   off?T:s.hub);
+  wheel.style.setProperty('--spoke', off?T:s.spoke);
+  wheel.style.setProperty('--arc',   off?T:s.arc);
+}
+function restart(el,cls){ el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+
+let cur=-1;
+function go(i){
+  showOnly('fan');
+  const s=SLIDES[i], prev=SLIDES[cur];
+  // 旋转扇面里先出现新画面
+  const inner=ring.querySelector('.inner');
+  inner.innerHTML=`<div class="bg ${s.cls||''}" style="${s.bg?'background-image:'+s.bg:''}"></div>${s.text||''}`;
+  ring.style.backgroundColor=s.fill;
+  restart(ring,'spin'); restart(wheel,'spin');
+  applyFan(s);
+  // 背景与文字随后整体淡入
+  setTimeout(()=>{ s.bgEl.classList.add('on'); if(prev && prev!==s) prev.bgEl.classList.remove('on'); },320);
+  if(prev && prev!==s) prev.txtEl.classList.remove('on');
+  s.txtEl.classList.add('on');
+  cur=i;
+}
+
+/* ---------------- 场景控制 ---------------- */
+const title=document.getElementById('titleScene'), paper=document.getElementById('paper'), tlines=document.getElementById('tlines');
+const emb=document.getElementById('emblemScene'), emb3d=document.getElementById('emb3d'), endS=document.getElementById('endScene');
+const fan=document.getElementById('fanScene');
+function showOnly(which){
+  if(which!=='title') title.classList.add('hidden');
+  if(which==='fan' && !emb.classList.contains('out')) emb.classList.add('hidden');
+}
+
+function titleFold(){
+  tlines.classList.add('draw');
+  setTimeout(()=>{ paper.classList.add('tri'); },400);
+  setTimeout(()=>{ tlines.classList.add('gone'); paper.classList.add('fly'); },800);
+}
+function emblemIn(){
+  title.classList.add('hidden');
+  restart(emb3d,'fly');
+  const spans=[...document.querySelectorAll('#slogan span:not(.gap)')];
+  // 先出现"时代 青年 担当"，再补上三个"新"
+  const rest=spans.filter(s=>s.textContent!=='新'), xin=spans.filter(s=>s.textContent==='新');
+  rest.sort(()=>Math.random()-.5).forEach((s,k)=>setTimeout(()=>s.classList.add('on'),3500+k*90));
+  xin.forEach((s,k)=>setTimeout(()=>s.classList.add('on'),4150+k*130));
+}
+function toVortex(){
+  title.classList.add('hidden');
+  const v=SLIDES[0];
+  v.bgEl.classList.add('wash','on');
+  cur=0;
+  emb.classList.add('out');
+  setTimeout(()=>v.bgEl.classList.remove('wash'),500);
+  setTimeout(()=>emb.classList.add('hidden'),1400);
+}
+function fanIntro(){ showOnly('fan'); emb.classList.add('hidden'); if(cur<0){SLIDES[0].bgEl.classList.add('on');cur=0;} applyFan(SLIDES[0]); restart(wheel,'spin'); }
+function endShow(){ endS.classList.add('on'); }
+
+const STEPS=[
+  {at:0,    run:()=>{}},
+  {at:2.0,  run:titleFold},
+  {at:3.75, run:emblemIn},
+  {at:10.8, run:toVortex},
+  {at:12.2, run:fanIntro},
+  {at:14.3, run:()=>go(1)},
+  {at:16.7, run:()=>go(2)},
+  {at:19.3, run:()=>go(3)},
+  {at:22.0, run:()=>go(4)},
+  {at:24.7, run:()=>go(5)},
+  {at:27.4, run:endShow},
+];
+let step=0, timer=null, paused=false;
+function schedule(){
+  clearTimeout(timer);
+  if(paused || step>=STEPS.length-1) return;
+  timer=setTimeout(next,(STEPS[step+1].at-STEPS[step].at)*1000);
+}
+function next(){
+  if(step>=STEPS.length-1){ location.reload(); return; }
+  step++; STEPS[step].run(); schedule();
+}
+document.addEventListener('click',next);
+document.addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  if(k==='arrowright'||k===' '||k==='enter'||k==='pagedown'){e.preventDefault();next();}
+  else if(k==='r'){location.reload();}
+  else if(k==='p'){paused=!paused; if(!paused) schedule(); else clearTimeout(timer);}
+  else if(k==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+});
+setTimeout(()=>document.getElementById('hint').style.opacity=0,3500);
+// 预加载图片后开始
+Promise.all(SLIDES.filter(s=>s.bg).map(s=>new Promise(r=>{const im=new Image();im.onload=im.onerror=r;im.src=s.bg.slice(4,-1);})))
+  .then(()=>{ fan.classList.remove('hidden'); schedule(); });
+</script>
+</body>
+</html>
